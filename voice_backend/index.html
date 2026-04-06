@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eva Voice Benchmark Client</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 40px auto; text-align: center; }
+        button { padding: 15px 30px; font-size: 18px; cursor: pointer; border-radius: 8px; border: none; }
+        #recordBtn { background-color: #007bff; color: white; }
+        #stopBtn { background-color: #dc3545; color: white; display: none; }
+        #status { margin-top: 20px; font-weight: bold; color: #555; }
+        #transcript { margin-top: 20px; color: #333; font-style: italic; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Eva Voice Assistant</h1>
+    <p>A low-latency CPU-optimized voice backend</p>
+    
+    <button id="recordBtn">Start Recording</button>
+    <button id="stopBtn">Stop Recording</button>
+    <div id="status">Status: Disconnected</div>
+    <div id="transcript"></div>
+
+    <script>
+        let ws;
+        let audioContext;
+        let workletNode;
+        let input;
+        
+        let playbackContext;
+        let nextPlayTime = 0;
+
+        const recordBtn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusEl = document.getElementById('status');
+        const transcriptEl = document.getElementById('transcript');
+
+        function connectWebSocket() {
+            ws = new WebSocket(`ws://${window.location.host}/ws/chat`);
+            ws.binaryType = "arraybuffer";
+            
+            ws.onopen = () => statusEl.textContent = "Status: Connected. Push 'Start Recording' to begin.";
+            ws.onclose = () => statusEl.textContent = "Status: Disconnected.";
+            
+            ws.onmessage = async (event) => {
+                if (typeof event.data === "string") {
+                    try {
+                        const msg = JSON.parse(event.data);
+                        if (msg.status === 'final') {
+                            statusEl.textContent = "Status: Synthesized response complete.";
+                        }
+                    } catch(e) {}
+                } else {
+                    let arrayBuffer;
+                    if (event.data instanceof ArrayBuffer) {
+                        arrayBuffer = event.data;
+                    } else if (event.data instanceof Blob) {
+                        arrayBuffer = await event.data.arrayBuffer();
+                    }
+                    if (arrayBuffer) {
+                        playAudioChunk(arrayBuffer);
+                    }
+                }
+            };
+        }
+
+        async function startRecording() {
+            if (!playbackContext) {
+                playbackContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 22050 });
+            }
+            if (playbackContext.state === 'suspended') {
+                await playbackContext.resume();
+            }
+            
+            transcriptEl.textContent = "";
+            statusEl.textContent = "Status: Listening...";
+            recordBtn.style.display = "none";
+            stopBtn.style.display = "inline-block";
+            
+            // Audio context for recording at 16kHz
+            audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+            await audioContext.resume();
+            
+            // Create the AudioWorklet dynamically
+            const workletCode = `
+                class RecorderProcessor extends AudioWorkletProcessor {
+                    process(inputs, outputs, parameters) {
+                        const input = inputs[0];
+                        if (input && input.length > 0) {
+                            const channelData = input[0];
+                            const int16Array = new Int16Array(channelData.length);
+                            for (let i = 0; i < channelData.length; i++) {
+                                const s = Math.max(-1, Math.min(1, channelData[i]));
+                                int16Array[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                            }
+                            this.port.postMessage(int16Array.buffer, [int16Array.buffer]);
+                        }
+                        return true;
+                    }
+                }
+                registerProcessor('recorder-worklet', RecorderProcessor);
+            `;
+            const blob = new Blob([workletCode], { type: 'application/javascript' });
+            const workletUrl = URL.createObjectURL(blob);
+            
+            await audioContext.audioWorklet.addModule(workletUrl);
+            
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            input = audioContext.createMediaStreamSource(stream);
+            
+            workletNode = new AudioWorkletNode(audioContext, 'recorder-worklet');
+            workletNode.port.onmessage = (e) => {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(e.data);
+                }
+            };
+
+            input.connect(workletNode);
+            // We do not strictly need to connect workletNode to destination for it to process.
+        }
+
+        function stopRecording() {
+            statusEl.textContent = "Status: Processing...";
+            stopBtn.style.display = "none";
+            recordBtn.style.display = "inline-block";
+            
+            if (workletNode && input) {
+                workletNode.disconnect();
+                input.disconnect();
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({status: "final"}));
+                }
+            }
+        }
+
+        function playAudioChunk(arrayBuffer) {
+            if (!playbackContext) {
+                playbackContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 22050 });
+            }
+            if (playbackContext.state === 'suspended') {
+                playbackContext.resume();
+            }
+            
+            // Ensure nextPlayTime is at least current time to prevent lag
+            if (nextPlayTime < playbackContext.currentTime) {
+                nextPlayTime = playbackContext.currentTime;
+            }
+
+            const int16Array = new Int16Array(arrayBuffer);
+            console.log(`[Playback] Received chunk: ${int16Array.length} samples at 22050Hz`);
+            
+            const float32Array = new Float32Array(int16Array.length);
+            for (let i = 0; i < int16Array.length; i++) {
+                float32Array[i] = int16Array[i] / 32768.0;
+            }
+
+            const audioBuffer = playbackContext.createBuffer(1, float32Array.length, 22050);
+            audioBuffer.getChannelData(0).set(float32Array);
+
+            const source = playbackContext.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(playbackContext.destination);
+
+            const playTime = Math.max(playbackContext.currentTime, nextPlayTime);
+            source.start(playTime);
+            nextPlayTime = playTime + audioBuffer.duration;
+            statusEl.textContent = "Status: Playing response...";
+        }
+
+        recordBtn.addEventListener('click', startRecording);
+        stopBtn.addEventListener('click', stopRecording);
+        
+        // Initialize
+        connectWebSocket();
+    </script>
+</body>
+</html>
