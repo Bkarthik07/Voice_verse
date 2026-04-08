@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #F7F7F8;
+  color: #111118;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #F7F7F8; }
+::-webkit-scrollbar-thumb { background: #D1C0F0; border-radius: 10px; }
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.2); }
+  50%       { transform: scaleY(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+.animate-slide-up { animation: slideUp 0.5s ease both; }
+.animate-fade-in  { animation: fadeIn 0.3s ease both; }
+.animate-float    { animation: float 3.5s ease-in-out infinite; }
+
+/* Card */
+.card {
+  background: #FFFFFF;
+  border: 1.5px solid #EAEAF0;
+  border-radius: 16px;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card:hover {
+  border-color: #D4C3F8;
+  box-shadow: 0 6px 24px rgba(91,33,182,0.09);
+}
+
+/* Waveform bars */
+.wave-bar {
+  width: 4px;
+  border-radius: 2px;
+  transform-origin: bottom center;
+  animation: wave-bar 0.8s ease-in-out infinite;
+}
+
+/* Toggle switch */
+.toggle-track {
+  width: 44px; height: 24px;
+  border-radius: 12px;
+  transition: background 0.25s;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+.toggle-thumb {
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  transition: left 0.25s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
