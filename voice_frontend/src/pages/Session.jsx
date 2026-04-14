@@ -3,13 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useVoiceSession } from '../hooks/useVoiceSession';
 
 const STATUS = {
-  idle:       { label: 'Not connected',  color: '#9CA3AF', bg: '#F9FAFB' },
-  connecting: { label: 'Connecting…',    color: '#F59E0B', bg: '#FFFBEB' },
-  connected:  { label: 'Ready',          color: '#10B981', bg: '#F0FDF4' },
-  listening:  { label: 'Listening…',     color: '#5B21B6', bg: '#F5F3FF' },
-  processing: { label: 'Processing…',    color: '#F59E0B', bg: '#FFFBEB' },
-  playing:    { label: 'Speaking…',      color: '#0EA5E9', bg: '#F0F9FF' },
-  error:      { label: 'Error',          color: '#EF4444', bg: '#FEF2F2' },
+  idle: { label: 'Not connected', color: '#9CA3AF', bg: '#F9FAFB' },
+  connecting: { label: 'Connecting…', color: '#F59E0B', bg: '#FFFBEB' },
+  connected: { label: 'Ready', color: '#10B981', bg: '#F0FDF4' },
+  listening: { label: 'Listening…', color: '#5B21B6', bg: '#F5F3FF' },
+  processing: { label: 'Processing…', color: '#F59E0B', bg: '#FFFBEB' },
+  playing: { label: 'Speaking…', color: '#0EA5E9', bg: '#F0F9FF' },
+  error: { label: 'Error', color: '#EF4444', bg: '#FEF2F2' },
 };
 
 function Waveform({ active }) {
@@ -36,7 +36,7 @@ function Timer({ running }) {
     else { clearInterval(ref.current); if (!running) setSec(0); }
     return () => clearInterval(ref.current);
   }, [running]);
-  const fmt = s => `${String(Math.floor(s / 60)).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`;
+  const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
   return (
     <span style={{
       fontSize: 13, fontWeight: 600, fontFamily: 'monospace',

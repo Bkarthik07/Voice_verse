@@ -5,7 +5,10 @@ faster-whisper
 transformers>=4.41.0
 torch
 piper-tts>=1.2.0
+peft>=0.10.0
+gdown>=5.1.0
 requests
 numpy
 scipy
 soundfile
+safetensors
