@@ -1,6 +1,10 @@
+# ── Web Framework ────────────────────────────────────────────────────
 fastapi>=0.111.0
 uvicorn[standard]>=0.30.0
 websockets>=12.0
+python-multipart>=0.0.6
+
+# ── AI / ML ──────────────────────────────────────────────────────────
 faster-whisper
 transformers>=4.41.0
 torch
@@ -12,3 +16,20 @@ numpy
 scipy
 soundfile
 safetensors
+
+# ── TiDB Cloud (MySQL async) ─────────────────────────────────────────
+sqlalchemy[asyncio]>=2.0.0
+aiomysql>=0.2.0
+PyMySQL>=1.1.0
+
+# ── MongoDB Atlas ────────────────────────────────────────────────────
+motor>=3.3.0
+beanie>=1.24.0
+
+# ── Auth ─────────────────────────────────────────────────────────────
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+email-validator>=2.0.0
+
+# ── Config ───────────────────────────────────────────────────────────
+python-dotenv>=1.0.0

@@ -48,7 +48,7 @@ def tts_worker(text_llm: multiprocessing.Queue, audio_out: multiprocessing.Queue
                 try:
                     t_tts_start = time.time()
                     wav_io = io.BytesIO()
-                    # synthesize_wav expects a wave.Wave_write — it sets headers internally
+                    # synthesize_wav expects a wave.Wave_write  it sets headers internally
                     with wave.open(wav_io, 'wb') as wav_writer:
                         voice.synthesize_wav(sentence, wav_writer)
 
@@ -62,7 +62,7 @@ def tts_worker(text_llm: multiprocessing.Queue, audio_out: multiprocessing.Queue
                         t_tts_end = time.time()
                         tts_latency = t_tts_end - t_tts_start
                         e2e_latency = t_tts_end - t_stt_end
-                        print(f"[LATENCY] ⏱️  TTS={tts_latency:.3f}s | End-to-End (STT→LLM→TTS)={e2e_latency:.3f}s")
+                        print(f"[LATENCY]   TTS={tts_latency:.3f}s | End-to-End (STTLLMTTS)={e2e_latency:.3f}s")
                         audio_out.put((session_id, raw_pcm, False))
 
                 except Exception:

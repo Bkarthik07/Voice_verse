@@ -47,7 +47,7 @@ def stt_worker(audio_in: multiprocessing.Queue, text_stt: multiprocessing.Queue)
                     
                     if text:
                         stt_latency = t_stt_end - t_stt_start
-                        print(f"[STT] ✅ Transcribed in {stt_latency:.3f}s: {text}")
+                        print(f"[STT]  Transcribed in {stt_latency:.3f}s: {text}")
                         # Pass the start timestamp so LLM/TTS can compute cumulative latency
                         text_stt.put((session_id, text, t_stt_end))
                         
