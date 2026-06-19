@@ -462,9 +462,9 @@ milestones
 
 > *(Add screenshots of the Home, Session, Profile, and Journey pages here)*
 
-| Home | Live Session | Profile |
-|---|---|---|
-| ![Home](docs/home.png) | ![Session](docs/session.png) | ![Profile](docs/profile.png) |
+| Home | Live Session |
+
+| ![Home](/home.png) | ![Session](/Session.png)  |
 
 ---
 
