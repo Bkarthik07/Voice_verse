@@ -9,7 +9,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org/)
 [![TiDB](https://img.shields.io/badge/TiDB-Cloud-CC0000?style=for-the-badge&logo=mysql&logoColor=white)](https://tidbcloud.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/atlas)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
 
 **Talk to Eva — your AI science companion — entirely through voice.**  
 Speak a question, get a spoken answer in real time.
@@ -337,7 +337,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_DAYS=30
 ```
 
-> **⚠️ Security:** Never commit your `.env` file. It is already listed in `.gitignore`.
 
 ---
 
@@ -460,7 +459,7 @@ milestones
 
 ## 🖼️ Screenshots
 
-> *(Add screenshots of the Home, Session, Profile, and Journey pages here)*
+
 
 | Home | Live Session |
 
