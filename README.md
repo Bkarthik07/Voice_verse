@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎙️ VoiceVerse
+#  VoiceVerse
 
 ### *A Real-Time Voice-Based AI Science Learning Companion*
 
@@ -18,7 +18,7 @@ Speak a question, get a spoken answer in real time.
 
 ---
 
-## 📖 Table of Contents
+##  Table of Contents
 
 - [Overview](#-overview)
 - [Key Features](#-key-features)
@@ -40,7 +40,7 @@ Speak a question, get a spoken answer in real time.
 
 ---
 
-## 🌟 Overview
+##  Overview
 
 **VoiceVerse** is a full-stack, low-latency voice AI application that lets users have natural spoken conversations with **Eva**, an AI science companion powered by a fine-tuned language model. Users speak science questions and receive intelligent, spoken answers — all in real time, with no typing required.
 
@@ -48,22 +48,22 @@ The system is engineered for **CPU-only deployment**, making it accessible witho
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
 | Feature | Description |
 |---|---|
-| 🎙️ **Real-Time Voice Chat** | WebSocket-based streaming audio pipeline with live transcription |
-| 🧠 **Fine-Tuned AI** | `google/flan-t5-base` with LoRA adapters fine-tuned for science Q&A |
-| 🔊 **Natural TTS** | Piper TTS with the `en_US-amy-medium` voice model |
-| 🔐 **JWT Auth** | Secure access + refresh token rotation with revocation |
-| 📊 **Session Tracking** | Full session history, interaction logs, and milestone badges |
-| 🏆 **Gamification** | Achievement milestones (First Session, 5, 10, 25 sessions) |
-| 💾 **Dual-DB Architecture** | TiDB Cloud (structured data) + MongoDB Atlas (interaction documents) |
-| ⚡ **CPU-Optimised** | `int8` quantised Whisper, PEFT LoRA merge, multiprocessing workers |
+|  **Real-Time Voice Chat** | WebSocket-based streaming audio pipeline with live transcription |
+|  **Fine-Tuned AI** | `google/flan-t5-base` with LoRA adapters fine-tuned for science Q&A |
+|  **Natural TTS** | Piper TTS with the `en_US-amy-medium` voice model |
+|  **JWT Auth** | Secure access + refresh token rotation with revocation |
+|  **Session Tracking** | Full session history, interaction logs, and milestone badges |
+|  **Gamification** | Achievement milestones (First Session, 5, 10, 25 sessions) |
+|  **Dual-DB Architecture** | TiDB Cloud (structured data) + MongoDB Atlas (interaction documents) |
+|  **CPU-Optimised** | `int8` quantised Whisper, PEFT LoRA merge, multiprocessing workers |
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -109,7 +109,7 @@ The system is engineered for **CPU-only deployment**, making it accessible witho
 
 ---
 
-## 🔄 Pipeline Flow
+##  Pipeline Flow
 
 ```
 User speaks
@@ -150,7 +150,7 @@ FastAPI audio_router_task → WebSocket → Browser plays audio
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Backend
 | Component | Technology |
@@ -176,7 +176,7 @@ FastAPI audio_router_task → WebSocket → Browser plays audio
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 voice_verse/
@@ -233,7 +233,7 @@ voice_verse/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -317,7 +317,7 @@ The app will be available at `http://localhost:5173`.
 
 ---
 
-## 🔐 Environment Variables
+##  Environment Variables
 
 Create `voice_backend/.env` with the following:
 
@@ -340,7 +340,7 @@ REFRESH_TOKEN_EXPIRE_DAYS=30
 
 ---
 
-## 📡 API Reference
+##  API Reference
 
 ### Authentication — `/auth`
 
@@ -378,7 +378,7 @@ ws://localhost:8000/ws/chat?token={access_token}&session_id={session_id}
 
 ---
 
-## 🗄️ Database Design
+##  Database Design
 
 ### TiDB Cloud (Relational)
 
@@ -435,7 +435,7 @@ milestones
 
 ---
 
-## 🤖 AI Components
+##  AI Components
 
 ### Speech-to-Text — `faster-whisper`
 - Model: `tiny.en` (English-only, fastest variant)
@@ -457,7 +457,7 @@ milestones
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
 
 
@@ -467,14 +467,14 @@ milestones
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please follow these steps:
 
 1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
-3. **Commit** your changes: `git commit -m 'Add amazing feature'`
-4. **Push** to your branch: `git push origin feature/amazing-feature`
+2. **Create** a feature branch: `git checkout -b feature/feature_name`
+3. **Commit** your changes: `git commit -m 'Add  feature'`
+4. **Push** to your branch: `git push origin feature/feature_name`
 5. **Open** a Pull Request
 
 
